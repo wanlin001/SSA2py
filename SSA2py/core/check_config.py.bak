@@ -396,10 +396,10 @@ def check(cfg, logger):
                logger.info('Program is terminated...')
                sys.exit()
            for j in i[2][2]:
-                if j!='HH' and j!='HN' and j!='BN' and j!='BH' and j!='EH' and j!='EN' and j!='BL' and j!='HL':
-                    logger.error('Download Rules/Distance problem with data identity. Accepts only IDS HH: Broadband, HN: Strong motion, BH: Broadband Borehole, BN: Strong motion Borehole, BL: Broadband Low-gain, HL: High-gain Low-frequency.')
-                    logger.info('Program is terminated...')
-                    sys.exit()
+               if j!='HH' and j!='HN' and j!='BN' and j!='BH' and j!='EH' and j!='EN':
+                   logger.error('Download Rules/Distance problem with data identity. Accepts only IDS HH: Broadband, HN: Strong motion, BH: Broadband Borehole, BN: Strong motion Borehole.')
+                   logger.info('Program is terminated...')
+                   sys.exit()
    else:
        logger.error("Download Rules/Distance")
        logger.info('Program is terminated...')
