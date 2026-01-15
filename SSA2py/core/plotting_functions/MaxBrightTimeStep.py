@@ -334,6 +334,19 @@ def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stati
         if Test=='MAIN' or Test=='ARF':
             #sc = ax1.scatter(BR[indicesBrig,1], BR[indicesBrig,2], s=s, c=timeSl, marker="$\u25EF$", cmap=cm, linewidth=2,  transform=ccrs.PlateCarree())
             sc = ax1.scatter(BR[indicesBrig,1], BR[indicesBrig,2], s=s, c=timeSl, cmap=cm, edgecolor='black', linewidth=1,  alpha=0.8, transform=ccrs.PlateCarree())
+   
+    # Plot profile location line on map (for depth-time evolution cross-section)
+    # Longitude profile: vertical line at event longitude with tolerance
+    profile_tolerance = 0.05  # degrees, tolerance range for profile
+    if Test=='MAIN' or Test=='ARF':
+        # Draw vertical line at event longitude (longitude profile)
+        ax1.plot([evlo, evlo], [min_lat, max_lat], 'r-', linewidth=2, 
+                 alpha=0.8, transform=ccrs.PlateCarree(), label='Profile Location')
+        # Draw tolerance range as shaded area
+        ax1.fill_betweenx([min_lat, max_lat], 
+                          evlo - profile_tolerance, 
+                          evlo + profile_tolerance,
+                          alpha=0.15, color='red', transform=ccrs.PlateCarree())
   
     #Epicenter in Map
     if hypo==True:
