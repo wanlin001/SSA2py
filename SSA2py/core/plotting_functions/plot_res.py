@@ -65,9 +65,19 @@ def plot_res_(paths, out_path):
         config.logger.info('Building Stations Map...')
 
         # stations
-        stations_used = [tr.stats.network+'.'+tr.stats.station for tr in config.st]
+        # Use config.stations (the actual stations dict used in backprojection) instead of config.st
+        # because config.st gets cleared after stream processing (line 142 in stream.py)
+        if hasattr(config, 'stations') and config.stations:
+            # Get stations from the stations dictionary (format: network.station)
+            stations_used = [v[0]+'.'+v[1] for k, v in config.stations.items()]
+            maxdist = max([gps2dist_azimuth(v[3], v[2], config.org.latitude, config.org.longitude)[0]/1000 
+                          for k, v in config.stations.items()])
+        else:
+            # Fallback: try to get from config.st if it exists
+            stations_used = [tr.stats.network+'.'+tr.stats.station for tr in config.st]
+            maxdist = max([tr.stats.distance for tr in config.st]) if len(config.st) > 0 else 100
+        
         stations_notused = [i.code+'.'+i[0].code for i in config.inv if i.code+'.'+i[0].code not in stations_used]
-        maxdist = max([tr.stats.distance for tr in config.st])
 
         try:
 
