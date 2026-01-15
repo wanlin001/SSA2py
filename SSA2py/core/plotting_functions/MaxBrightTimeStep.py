@@ -59,7 +59,7 @@ from SSA2py.core.plotting_functions.other import circular_hist
 def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stations_used,\
                        startTime=None, endTime=None, minBrig=None, maxBrig=None,\
                        min_lon=None, min_lat=None, max_lon=None, max_lat=None, min_depth=None, max_depth=None,\
-                       points_size=10, maxgrid = 100, faults=True, grid=True, hypo=True, colormap='plasma', topo=True,\
+                       points_size=10, maxgrid = 100, faults=True, grid=True, hypo=True, colormap='pink', topo=True,\
                        meridian=True, info_box=True, Test='MAIN', autoselect=True,\
                        filename='MaximumBrightness', outpath='.', fileformat='pdf', dpi=400):
 
