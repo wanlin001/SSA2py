@@ -381,23 +381,23 @@ def commonMetric(st, raw, q):
             if q=='ACC':
                 if fnmatch.fnmatch(tr.stats.channel,'?N?') or fnmatch.fnmatch(tr.stats.channel,'?G?'):
                     pass
-                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?'):
+                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?') or fnmatch.fnmatch(tr.stats.channel,'BL?') or fnmatch.fnmatch(tr.stats.channel,'BH?') or fnmatch.fnmatch(tr.stats.channel,'HN?') or fnmatch.fnmatch(tr.stats.channel,'HL?'):
                     tr.differentiate(method='gradient')
             elif q=='VEL':
                 if fnmatch.fnmatch(tr.stats.channel,'?N?') or fnmatch.fnmatch(tr.stats.channel,'?G?'):
                     tr.integrate(method='cumtrapz')     
-                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?'):
+                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?') or fnmatch.fnmatch(tr.stats.channel,'BL?') or fnmatch.fnmatch(tr.stats.channel,'BH?') or fnmatch.fnmatch(tr.stats.channel,'HN?') or fnmatch.fnmatch(tr.stats.channel,'HL?'):
                     pass
             elif q=='DISP':
                 if fnmatch.fnmatch(tr.stats.channel,'?N?') or fnmatch.fnmatch(tr.stats.channel,'?G?'):
                     tr.integrate(method='cumtrapz')
                     tr.integrate(method='cumtrapz')
-                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?'):
+                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?') or fnmatch.fnmatch(tr.stats.channel,'BL?') or fnmatch.fnmatch(tr.stats.channel,'BH?') or fnmatch.fnmatch(tr.stats.channel,'HN?') or fnmatch.fnmatch(tr.stats.channel,'HL?'):
                     tr.integrate(method='cumtrapz')
             else:
                 if fnmatch.fnmatch(tr.stats.channel,'?N?') or fnmatch.fnmatch(tr.stats.channel,'?G?'):
                     pass
-                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?'):
+                if fnmatch.fnmatch(tr.stats.channel,'?H?') or fnmatch.fnmatch(tr.stats.channel,'?L?') or fnmatch.fnmatch(tr.stats.channel,'BL?') or fnmatch.fnmatch(tr.stats.channel,'BH?') or fnmatch.fnmatch(tr.stats.channel,'HN?') or fnmatch.fnmatch(tr.stats.channel,'HL?'):
                     tr.differentiate(method='gradient')
     return st
 
@@ -471,7 +471,7 @@ def checkD(stream):
     #Dictionary with decision characteristics
     Qdec = {}
 
-    if 'CLIP' in config.cfg['Streams']['Quality Control'] and (stream[3][1]!='N' or stream[3][1]!='G'):
+    if 'CLIP' in config.cfg['Streams']['Quality Control'] and (stream[3][1]!='N' and stream[3][1]!='G' and stream[3][1]!='L'):
 
         Qdec = checkCLIP(config.st.select(station=stream[1], channel=stream[3]).copy()[0], Qdec)
 
