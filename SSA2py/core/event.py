@@ -197,7 +197,7 @@ def getMagnitude(evt, org):
 
 def qualityEvent(cfg, evt, org):
     try:
-        inittime=min([o.creation_info.creation_time for o in evt.origins])
+        inittime=min([o.creation_info.creation_time for o in evt.origins if o.creation_info and o.creation_info.creation_time])
         magnitude=getMagnitude(evt, org)
 
         # if data exit for realtime scenario
@@ -233,12 +233,19 @@ def getOrigin(cfg, evt, historical):
             if not org: raise
         except:
             try:
-                org=sorted(evt.origins, key=lambda o: o.creation_info.creation_time)[-1]
+                # Filter out origins without creation_info or creation_time
+                origins_with_time = [o for o in evt.origins if o.creation_info and o.creation_info.creation_time]
+                if origins_with_time:
+                    org=sorted(origins_with_time, key=lambda o: o.creation_info.creation_time)[-1]
+                else:
+                    org=evt.origins[-1]
             except:
                 org=evt.origins[-1]
     else:
         try:
-            for i, org in enumerate(sorted(evt.origins, key=lambda o: o.creation_info.creation_time)):
+            # Filter out origins without creation_info or creation_time
+            origins_with_time = [o for o in evt.origins if o.creation_info and o.creation_info.creation_time]
+            for i, org in enumerate(sorted(origins_with_time, key=lambda o: o.creation_info.creation_time) if origins_with_time else evt.origins):
                 # first found (mimics real-time status)
                 if qualityEvent(cfg,evt,org):
                     return org
