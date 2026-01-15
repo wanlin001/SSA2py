@@ -54,6 +54,7 @@ from netCDF4 import Dataset
 
 from SSA2py.core import config
 from SSA2py.core.plotting_functions.other import circular_hist
+from SSA2py.core.plotting_functions.DepthTimeEvolution import plot_depth_time_evolution
 
 
 def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stations_used,\
@@ -382,6 +383,20 @@ def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stati
     ax2.tick_params(left = False, right = True , labelleft = False,\
                     labelbottom = False, bottom = False, top = True, labeltop = True, labelright = True)
     ax2.grid(True)
+
+    #Depth-Time Evolution
+    ######################
+    ax2b = fig.add_subplot(gs[36:50, 67:])
+    
+    if Test=='MAIN' or Test=='ARF':
+        # Add depth-time evolution plot
+        plot_depth_time_evolution(ax2b, BR, indicesBrig, evdepth, 
+                                  colormap=colormap, cross_section='longitude', 
+                                  evlo=evlo, evla=evla)
+        ax2b.yaxis.set_label_position("right")
+        ax2b.tick_params(left=False, right=True, labelleft=False,
+                        labelbottom=True, bottom=True, top=False, 
+                        labeltop=False, labelright=True)
 
 
     #Cross 1
