@@ -234,12 +234,25 @@ def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stati
 
     if faults==True:
         try:
-            faults = shapefile.Reader(os.path.join(config.cfg['Plotting']['Save Layers'],'FAULTS',\
-                     'shapefile','gem_active_faults.shp'), encoding='latin-1')
-            for tmp in faults.shapeRecords():
-                 x = [i[0] for i in tmp.shape.points[:]]
-                 y = [i[1] for i in tmp.shape.points[:]]
-                 ax1.plot(x, y, color='k', lw=1.0, transform= ccrs.PlateCarree())
+            # Find all .shp files in FAULTS folder (including subdirectories)
+            faults_dir = os.path.join(config.cfg['Plotting']['Save Layers'], 'FAULTS')
+            if os.path.exists(faults_dir):
+                # Search for all .shp files recursively
+                for root, dirs, files in os.walk(faults_dir):
+                    for file in files:
+                        if file.endswith('.shp'):
+                            shp_path = os.path.join(root, file)
+                            try:
+                                fault_shp = shapefile.Reader(shp_path, encoding='latin-1')
+                                for tmp in fault_shp.shapeRecords():
+                                    x = [i[0] for i in tmp.shape.points[:]]
+                                    y = [i[1] for i in tmp.shape.points[:]]
+                                    ax1.plot(x, y, color='k', lw=1.0, transform=ccrs.PlateCarree())
+                                config.logger.info(f'Plotted fault shapefile: {file}')
+                            except Exception as e:
+                                config.logger.warning(f'Could not load fault shapefile {file}: {e}')
+            else:
+                config.logger.warning(f'FAULTS directory not found: {faults_dir}')
         except Exception as e:
             config.logger.warning(e)
             config.logger.warning('Faults Shapefile error')

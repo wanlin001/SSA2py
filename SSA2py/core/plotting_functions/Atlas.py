@@ -214,11 +214,25 @@ def atlas(inv, stations_used, stations_notused, evla, evlo, evdepth,\
     #PLATES
     if plates==True:
         try:
-            plates = shapefile.Reader(os.path.join(config.cfg['Plotting']['Save Layers'],'PLATES', 'PB2002_boundaries.shp'))
-            for tmp in plates.shapeRecords():
-                x = [i[0] for i in tmp.shape.points[:]]
-                y = [i[1] for i in tmp.shape.points[:]]
-                ax_inset.plot(x, y, color='k', lw=0.6, transform= ccrs.PlateCarree())
+            # Find all .shp files in PLATES folder (including subdirectories)
+            plates_dir = os.path.join(config.cfg['Plotting']['Save Layers'], 'PLATES')
+            if os.path.exists(plates_dir):
+                # Search for all .shp files recursively
+                for root, dirs, files in os.walk(plates_dir):
+                    for file in files:
+                        if file.endswith('.shp'):
+                            shp_path = os.path.join(root, file)
+                            try:
+                                plate_shp = shapefile.Reader(shp_path)
+                                for tmp in plate_shp.shapeRecords():
+                                    x = [i[0] for i in tmp.shape.points[:]]
+                                    y = [i[1] for i in tmp.shape.points[:]]
+                                    ax_inset.plot(x, y, color='k', lw=0.6, transform=ccrs.PlateCarree())
+                                config.logger.info(f'Plotted plate shapefile: {file}')
+                            except Exception as e:
+                                config.logger.warning(f'Could not load plate shapefile {file}: {e}')
+            else:
+                config.logger.warning(f'PLATES directory not found: {plates_dir}')
         except Exception as e:
             config.logger.warning(e)
             config.logger.warning('Plates Shapefile error')
