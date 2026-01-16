@@ -111,7 +111,7 @@ def plot_res_(paths, out_path):
                                config.inv, stations_used, startTime=None, endTime=None, minBrig=None, maxBrig=None,\
                                min_lon=None, min_lat=None, max_lon=None, max_lat=None, min_depth=None, max_depth=None,\
                                points_size=8, maxgrid=maxgrid,\
-                               faults=True, grid=True, hypo=True, colormap='YlOrBr', topo=True,\
+                               faults=True, grid=True, hypo=True, colormap='rainbow', topo=True,\
                                meridian=True, info_box=True, Test='MAIN',autoselect=False,\
                                filename='MaximumBrightness', outpath=out_path, fileformat='png', dpi=400)
         except Exception as e:
