@@ -52,6 +52,11 @@ def getInventory():
 
     # find min and max distance of accepted rules
     # for defining inventory geobox selection
+    if not config.distRules:
+        config.logger.error('Empty Metadata Variable!')
+        config.logger.info('Error trying to get data - metadata. Continue to next event.')
+        raise ValueError('No distance rules configured or inventory is empty')
+    
     mindist=min([rule[0] for rule in config.distRules])
     maxdist=max([rule[1] for rule in config.distRules])
 
