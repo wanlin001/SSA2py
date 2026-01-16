@@ -384,13 +384,60 @@ def MaxBrightTimeStep_(brpath, brpathboot, evla, evlo, evdepth, time, inv, stati
                     labelbottom = False, bottom = False, top = True, labeltop = True, labelright = True)
     ax2.grid(True)
 
-    #Cross 1 - REMOVED (now in separate depth cross-section script)
-    # ax3 would be here
-    # Longitude vs Depth cross-section REMOVED
-    # Now available in separate DepthCrossSectionTimeRange script
+    #Cross 1 - Longitude vs Depth
+    ax3 = fig.add_subplot(gs[68:83, 0:49])
+
+    if Test=='MAIN' or Test=='ARF':
+        sc = ax3.scatter(BR[indicesBrig,1], BR[indicesBrig,3], s=s, c=timeSl, cmap=cm, linewidth=1, edgecolor='black', alpha=0.8)
+
+    if hypo==True:
+        ax3.plot(evlo, evdepth, '*', color='red', linewidth=5, markersize=20, markeredgecolor='k', markeredgewidth=1.5)
+
+    ax3.set_xlim([min_lon, max_lon])
+
+    if (min_depth is None) and (max_depth is None):
+        ax3.set_ylim([math.floor(min(depth)), math.ceil(max(depth))])
+    if (min_depth is None) and (max_depth is not None):
+        ax3.set_ylim([math.floor(min(depth)), math.ceil(max_depth)])
+    if (min_depth is not None) and (max_depth is None):
+        ax3.set_ylim([math.floor(min_depth), math.ceil(max(depth))])
+    if (min_depth is not None) and (max_depth is not None):
+        ax3.set_ylim([math.floor(min_depth), math.ceil(max_depth)])
+
+    ax3.set_xlabel('Longitude (°)', fontsize = 12, labelpad=8)
+    ax3.set_ylabel('Depth (km)', fontsize = 12, labelpad=8)
+    ax3.set_aspect('equal', adjustable='box')  # 1:1 aspect ratio
+    ax3.invert_yaxis()
+    ax3.grid(True)
  
-    # Latitude vs Depth cross-section REMOVED  
-    # Now available in separate DepthCrossSectionTimeRange script
+    #Cross 2 - Latitude vs Depth
+    ax4 = fig.add_subplot(gs[68:83, 51:])
+
+    if Test=='MAIN' or Test=='ARF':
+         sc = ax4.scatter(BR[indicesBrig,2], BR[indicesBrig,3], s=s, c=timeSl, cmap=cm, linewidth=1, edgecolor='black', alpha=0.8)
+    ax4.set_xlabel('Latitude (°)', fontsize = 12, labelpad=8)
+    ax4.yaxis.set_label_position("right")
+    #ax4.set_ylabel('Depth (km)', fontsize = 12, labelpad=8)
+    ax4.tick_params(left = False, right = True , labelleft = False,\
+                    labelbottom = True, bottom = True, top = False, labeltop = False, labelright = True)
+
+    ax4.set_xlim([min_lat, max_lat])
+
+    if (min_depth is None) and (max_depth is None):
+        ax4.set_ylim([math.floor(min(depth)), math.ceil(max(depth))])
+    if (min_depth is None) and (max_depth is not None):
+        ax4.set_ylim([math.floor(min(depth)), math.ceil(max_depth)])
+    if (min_depth is not None) and (max_depth is None):
+        ax4.set_ylim([math.floor(min_depth), math.ceil(max(depth))])
+    if (min_depth is not None) and (max_depth is not None):
+        ax4.set_ylim([math.floor(min_depth), math.ceil(max_depth)])
+
+    if hypo==True:
+        ax4.plot(evla, evdepth, '*', color='red', linewidth=5, markersize=20, markeredgecolor='k', markeredgewidth=1.5)
+
+    ax4.set_aspect('equal', adjustable='box')  # 1:1 aspect ratio
+    ax4.invert_yaxis()
+    ax4.grid(True)
 
     #Stations azimuths
     ##################
